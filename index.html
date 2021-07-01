@@ -15,12 +15,28 @@
         main {
             text-align: center;
         }
+        .dot1, .dot2, .dot3 {
+            animation: blink 1s linear 0s infinite alternate;
+        }
+
+        .dot2 {
+            animation-delay: .2s;
+        }
+
+        .dot3 {
+            animation-delay: .4s;
+        }
+
+        @keyframes blink {
+            from {color: rgba(0,0,0,1);}
+            to {color: rgba(0,0,0,.2);}
+        }
     </style>
 </head>
 <body>
     <main>
         <h2>Can i use theme-color?</h2>
-        <p>coming soon...</p>
+        <p>coming soon<span class="dot1">.</span><span class="dot2">.</span><span class="dot3">.</span></p>
     </main>
 </body>
 </html>
