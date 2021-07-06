@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Color inputs</title>
+  <meta content="" name="theme-color">
+  <script>
+    function colorToHSL(color) {
+      return RGBToHSL(...colorToRGB(color));
+    }
+
+    // https://stackoverflow.com/a/24390910/8609476
+    function colorToRGB(color) {
+      // Returns the color as an array of [r, g, b, a] -- all range from 0 - 255
+      // color must be a valid canvas fillStyle. This will cover most anything
+      // you'd want to use.
+      // Examples:
+      // colorToRGBA('red')  # [255, 0, 0, 255]
+      // colorToRGBA('#f00') # [255, 0, 0, 255]
+      let cvs, ctx;
+      cvs = document.createElement('canvas');
+      cvs.height = 1;
+      cvs.width = 1;
+      ctx = cvs.getContext('2d');
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, 1, 1);
+      return ctx.getImageData(0, 0, 1, 1).data.slice(0, 3);
+    }
+
+    // https://css-tricks.com/converting-color-spaces-in-javascript/#rgb-to-hsl
+    function RGBToHSL(r, g, b) {
+      // Make r, g, and b fractions of 1
+      r /= 255;
+      g /= 255;
+      b /= 255;
+
+      // Find greatest and smallest channel values
+      let cmin = Math.min(r, g, b),
+        cmax = Math.max(r, g, b),
+        delta = cmax - cmin,
+        h = 0,
+        s = 0,
+        l = 0;
+
+      // Calculate hue
+      // No difference
+      if (delta === 0)
+        h = 0;
+      // Red is max
+      else if (cmax === r)
+        h = ((g - b) / delta) % 6;
+      // Green is max
+      else if (cmax === g)
+        h = (b - r) / delta + 2;
+      // Blue is max
+      else
+        h = (r - g) / delta + 4;
+
+      h = Math.round(h * 60);
+
+      // Make negative hues positive behind 360°
+      if (h < 0)
+        h += 360;
+
+      // Calculate lightness
+      l = (cmax + cmin) / 2;
+
+      // Calculate saturation
+      s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+      // Multiply l and s by 100
+      s = +(s * 100).toFixed(1);
+      l = +(l * 100).toFixed(1);
+
+      return "hsl(" + h + "," + s + "%," + l + "%)";
+    }
+  </script>
+</head>
+<body>
+<header>
+  <h1>Color inputs</h1>
+  <p id="color"></p>
+</header>
+
+<main>
+  <form>
+    <label>
+      <span>Color type:</span>
+      <select class="color__type">
+        <option value="native">Native color input</option>
+        <option value="named">Named color</option>
+        <option selected value="other">CSS-Like</option>
+      </select>
+    </label>
+
+    <fieldset>
+      <legend>Color inputs</legend>
+      <label class="color">
+        <span>Native</span>
+        <input class="color__input" name="native" type="color">
+      </label>
+      <label class="color">
+        <span>Named</span>
+        <input class="color__input" list="color-list" name="named" type="text">
+        <datalist id="color-list">
+          <option value="aliceblue">
+          <option value="antiquewhite">
+          <option value="aqua">
+          <option value="aquamarine">
+          <option value="azure">
+          <option value="beige">
+          <option value="bisque">
+          <option value="black">
+          <option value="blanchedalmond">
+          <option value="blue">
+          <option value="blueviolet">
+          <option value="brown">
+          <option value="burlywood">
+          <option value="cadetblue">
+          <option value="chartreuse">
+          <option value="chocolate">
+          <option value="coral">
+          <option value="cornflowerblue">
+          <option value="cornsilk">
+          <option value="crimson">
+          <option value="cyan">
+          <option value="darkblue">
+          <option value="darkcyan">
+          <option value="darkgoldenrod">
+          <option value="darkgray">
+          <option value="darkgreen">
+          <option value="darkkhaki">
+          <option value="darkmagenta">
+          <option value="darkolivegreen">
+          <option value="darkorange">
+          <option value="darkorchid">
+          <option value="darkred">
+          <option value="darksalmon">
+          <option value="darkseagreen">
+          <option value="darkslateblue">
+          <option value="darkslategray">
+          <option value="darkturquoise">
+          <option value="darkviolet">
+          <option value="deeppink">
+          <option value="deepskyblue">
+          <option value="dimgray">
+          <option value="dodgerblue">
+          <option value="firebrick">
+          <option value="floralwhite">
+          <option value="forestgreen">
+          <option value="fuchsia">
+          <option value="gainsboro">
+          <option value="ghostwhite">
+          <option value="gold">
+          <option value="goldenrod">
+          <option value="gray">
+          <option value="green">
+          <option value="greenyellow">
+          <option value="honeydew">
+          <option value="hotpink">
+          <option value="indianred">
+          <option value="indigo">
+          <option value="ivory">
+          <option value="khaki">
+          <option value="lavender">
+          <option value="lavenderblush">
+          <option value="lawngreen">
+          <option value="lemonchiffon">
+          <option value="lightblue">
+          <option value="lightcoral">
+          <option value="lightcyan">
+          <option value="lightgoldenrodyellow">
+          <option value="lightgrey">
+          <option value="lightgreen">
+          <option value="lightpink">
+          <option value="lightsalmon">
+          <option value="lightseagreen">
+          <option value="lightskyblue">
+          <option value="lightslategray">
+          <option value="lightsteelblue">
+          <option value="lightyellow">
+          <option value="lime">
+          <option value="limegreen">
+          <option value="linen">
+          <option value="magenta">
+          <option value="maroon">
+          <option value="mediumaquamarine">
+          <option value="mediumblue">
+          <option value="mediumorchid">
+          <option value="mediumpurple">
+          <option value="mediumseagreen">
+          <option value="mediumslateblue">
+          <option value="mediumspringgreen">
+          <option value="mediumturquoise">
+          <option value="mediumvioletred">
+          <option value="midnightblue">
+          <option value="mintcream">
+          <option value="mistyrose">
+          <option value="moccasin">
+          <option value="navajowhite">
+          <option value="navy">
+          <option value="oldlace">
+          <option value="olive">
+          <option value="olivedrab">
+          <option value="orange">
+          <option value="orangered">
+          <option value="orchid">
+          <option value="palegoldenrod">
+          <option value="palegreen">
+          <option value="paleturquoise">
+          <option value="palevioletred">
+          <option value="papayawhip">
+          <option value="peachpuff">
+          <option value="peru">
+          <option value="pink">
+          <option value="plum">
+          <option value="powderblue">
+          <option value="purple">
+          <option value="rebeccapurple">
+          <option value="red">
+          <option value="rosybrown">
+          <option value="royalblue">
+          <option value="saddlebrown">
+          <option value="salmon">
+          <option value="sandybrown">
+          <option value="seagreen">
+          <option value="seashell">
+          <option value="sienna">
+          <option value="silver">
+          <option value="skyblue">
+          <option value="slateblue">
+          <option value="slategray">
+          <option value="snow">
+          <option value="springgreen">
+          <option value="steelblue">
+          <option value="tan">
+          <option value="teal">
+          <option value="thistle">
+          <option value="tomato">
+          <option value="turquoise">
+          <option value="violet">
+          <option value="wheat">
+          <option value="white">
+          <option value="whitesmoke">
+          <option value="yellow">
+          <option value="yellowgreen">
+        </datalist>
+      </label>
+      <label class="color">
+        <span>CSS-Like</span>
+        <input class="color__input" name="other" type="text" value="rgb(0, 118, 0)">
+      </label>
+    </fieldset>
+  </form>
+</main>
+
+<script>
+  const themeColor = document.querySelector('meta[name="theme-color"]')
+  const colorSelect = document.querySelector('select.color__type')
+  const colorText = document.getElementById('color')
+  const colorInput = () => document.querySelector(`input[name="${colorSelect.value}"]`)
+  const colors = document.querySelectorAll('.color')
+  for (let input of document.querySelectorAll('input.color__input')) {
+    input.addEventListener('input', (ev) => {
+      console.log(ev.target.value);
+      let hsl = colorToHSL(ev.target.value);
+      console.log(hsl);
+      themeColor.setAttribute('content', hsl);
+      colorText.style.color = hsl;
+      colorText.innerText = hsl;
+    })
+  }
+  colorSelect.addEventListener('change', () => {
+    for (let c of colors) {
+      c.style.display = "none"
+    }
+    let input = colorInput();
+    input.parentElement.style.display = 'block'
+    input.dispatchEvent(new Event('input'))
+  })
+  colorSelect.dispatchEvent(new Event('change'))
+  colorInput().dispatchEvent(new Event('input'))
+</script>
+</body>
+</html>
